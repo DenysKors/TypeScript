@@ -65,3 +65,5 @@ type CustomPage = {
 	status: "open" | "close";
 	details?: { createAt: Date; updateAt: Date };
 };
+
+let arrNum: number[];
