@@ -66,4 +66,48 @@ type CustomPage = {
 	details?: { createAt: Date; updateAt: Date };
 };
 
-let arrNum: number[];
+abstract class House {
+	protected door = false;
+	private tenants: Person[] = [];
+	constructor(protected key: Key) {}
+	comeIn(person: Person): void {
+		if (!this.door) {
+			throw new Error("It is not your door");
+		}
+		this.tenants.push(person);
+		console.log("You are in");
+	}
+	abstract openDoor(key: Key): boolean;
+}
+
+class Key {
+	private signature: number;
+	constructor() {
+		this.signature = Math.random();
+	}
+	getSignature() {
+		return this.signature;
+	}
+}
+
+class Person {
+	constructor(private key: Key) {}
+	getKey(): Key {
+		return this.key;
+	}
+}
+
+class MyHouse extends House {
+	openDoor(key: Key) {
+		if (key.getSignature() !== this.key.getSignature()) {
+			throw new Error("This key is not allowed");
+		}
+		return (this.door = true);
+	}
+}
+
+const doorKey = new Key();
+const randomHouse = new MyHouse(doorKey);
+const randomPerson = new Person(doorKey);
+randomHouse.openDoor(randomPerson.getKey());
+randomHouse.comeIn(randomPerson);

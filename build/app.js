@@ -47,5 +47,47 @@ function calc(num1, num2) {
 function customError() {
     throw new Error("Error");
 }
-let arrNum;
+class House {
+    constructor(key) {
+        this.key = key;
+        this.door = false;
+        this.tenants = [];
+    }
+    comeIn(person) {
+        if (!this.door) {
+            throw new Error("It is not your door");
+        }
+        this.tenants.push(person);
+        console.log("You are in");
+    }
+}
+class Key {
+    constructor() {
+        this.signature = Math.random();
+    }
+    getSignature() {
+        return this.signature;
+    }
+}
+class Person {
+    constructor(key) {
+        this.key = key;
+    }
+    getKey() {
+        return this.key;
+    }
+}
+class MyHouse extends House {
+    openDoor(key) {
+        if (key.getSignature() !== this.key.getSignature()) {
+            throw new Error("This key is not allowed");
+        }
+        return (this.door = true);
+    }
+}
+const doorKey = new Key();
+const randomHouse = new MyHouse(doorKey);
+const randomPerson = new Person(doorKey);
+randomHouse.openDoor(randomPerson.getKey());
+randomHouse.comeIn(randomPerson);
 //# sourceMappingURL=app.js.map
